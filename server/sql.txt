@@ -1,0 +1,18 @@
+CREATE TABLE OnePiece
+(
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    titre_anime VARCHAR(255),
+    titre_episode VARCHAR(255),
+    episode VARCHAR(255) UNIQUE,
+    likes INT,
+    lien VARCHAR(255)
+);
+CREATE TABLE Naruto
+(
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    titre_anime VARCHAR(255),
+    titre_episode VARCHAR(255),
+    episode VARCHAR(255) UNIQUE,
+    likes INT,
+    lien VARCHAR(255)
+)

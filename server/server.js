@@ -3,7 +3,7 @@ const app = express();
 var mysql = require('mysql');
 const bodyParser = require('body-parser')
 var fs = require('fs')
-
+var cors = require('cors')
 app.use(bodyParser.json());
 //app.use(bodyParser.urlencoded({extended:false}))
 //var bodyParser = require('body-parser');
@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 var fileupload = require('express-fileupload')
 app.use(fileupload())
 var cpt = 0;
-
+app.use(cors())
 var connection = mysql.createConnection({
   host     : 'localhost',
   user     : 'root',
@@ -41,6 +41,14 @@ app.get('/anime',(req, res)=>{
     })
 })
 
+app.delete("/del/:serie",(req,res)=>{
+    let sql = "TRUNCATE TABLE "+req.params.serie
+    connection.query(sql,(err,result)=>{
+        console.log(req.params.serie + " supprimer")
+        res.json({message:"delete all "+req.params.serie})
+    })
+})
+
 
 app.post("/add",(req,res)=>{
     
@@ -62,16 +70,14 @@ app.post("/add",(req,res)=>{
     });
 })
 
-app.delete("/del",(req,res)=>{
+app.delete("/del/:serie/:episode",(req,res)=>{
     
-    var id = req.body.id
-    
-    let sql = "DELETE FROM anime where id = ?"
-    connection.query(sql,[id],
+    let sql = "DELETE FROM " + req.params.serie +" where episode = "+req.params.episode
+    connection.query(sql,
         (err,result)=>{
             if(err)throw err;
-            console.log( id + " supprimée")
-            res.json({message: "delete "+ id})
+            console.log( req.params.episode + " supprimée")
+            res.json({message: "delete "+ req.params.episode})
             res.end();
     });
 })
@@ -109,6 +115,7 @@ app.use(function (req, res, next) {
     // Pass to next layer of middleware
     next();
 });
+
 
 
 app.get("/episode/:serie",(req,res)=>{

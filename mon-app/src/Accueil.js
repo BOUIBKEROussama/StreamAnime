@@ -5,7 +5,7 @@ import {
   Link
 } from "react-router-dom";
 import Axios from 'axios';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 
 function Accueil(){
 
@@ -23,7 +23,7 @@ function Accueil(){
     getAllNames();
   },[]);
   
-  const a = tab.map((s,i)=><div key={i}><Link to ={`/${s.lien}`}> {s.titre}</Link></div>)
+    
   const carousel = tab.map((s,i)=>
   
   <Carousel.Item key={i}>
@@ -41,7 +41,7 @@ function Accueil(){
   )
 
     return(
-      <div>
+      <Container fluid style={{height:"969px",backgroundColor:"rgb(19,19,19)"}}>
         <Container fluid >
           <Row>
           <Col style={{backgroundColor:"black"}}></Col>
@@ -54,28 +54,19 @@ function Accueil(){
           </Row>
         
         </Container>
-        {a}
-        
-        
-
-
-        <div>
-            <Link to ="/OnePiece">
-                <button>One Piece</button>
-            </Link>
-        </div>
-        <div>
-            <Link to ="/Naruto">
-                <button>Naruto</button>
-            </Link>
-        </div>
-       
-        <div>
-          <Link to ="/FairyTail">
-              <button>Fairy Tail</button>
+        <Container style={{marginTop:"20px"}}>
+        <Row>
+        {tab.map((s,i)=>{
+          return <Col style={{textalign:"center"}}>
+          
+          <Link to ={`/${s.lien}/1`}>
+            <Button variant="light"> {s.titre}</Button>
           </Link>
-        </div>
-      </div>
+          </Col>
+        })}
+        </Row>
+        </Container>
+      </Container>
     );
   }
 

@@ -59,7 +59,6 @@ function App () {
           <Route path="/Pannel" exact component = {ControlPannel}></Route>
           
           {liste.map((s,i)=><div key = {i}>
-            <Route path={`/${s}`} exact component = {()=><Serie nom={s}/>} ></Route>
             <Route path={`/${s}/:id`} exact component = {()=><SerieEpisode nom={s}/>}></Route>
             </div>
           )}

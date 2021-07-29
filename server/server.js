@@ -41,6 +41,27 @@ app.get('/anime',(req, res)=>{
     })
 })
 
+app.get('/accueil_anime',(req,res)=>{
+    connection.query("SELECT * FROM accueil_anime",(err,result)=>{
+        res.json(result)
+    })
+})
+
+app.post('/accueil_anime',(req,res)=>{
+    let sql = "INSERT INTO accueil_anime VALUES(?,?,?)"
+    connection.query(sql,[req.body.image,req.body.titre,req.body.lien],(err,result)=>{
+        res.json({message:"added " + req.body.titre})
+    })
+})
+
+app.delete('/accueil_anime',(req,res)=>{
+    let sql = "DELETE FROM accueil_anime WHERE titre = ?"
+    connection.query(sql,[req.body.titre],(err,result)=>{
+        res.json({message:"delete " + req.body.titre})
+    })
+})
+
+
 app.delete("/del/:serie",(req,res)=>{
     let sql = "TRUNCATE TABLE "+req.params.serie
     connection.query(sql,(err,result)=>{
@@ -135,26 +156,59 @@ app.get("/episode/:serie",(req,res)=>{
 
 app.post("/addLink", (req,res)=>{
     
-    //console.log(req.files.text.data)
-    //fs.writeFileSync("./file/data1.json",req.files.text.data,(err)=>{    
+    console.log(req.files.text.data)
+    fs.writeFileSync("./file/data1.json",req.files.text.data,(err)=>{})
+    console.log(req.body.title_database)
     var liste = []
-    var d = fs.readFileSync("./file/NarutoShippudenJSON.json")
+    var d = fs.readFileSync("./file/data1.json")
     var words = JSON.parse(d.toString("utf8"))
-    console.log(words["1"])
+    console.log(words)
     const taille = Object.keys(words).length
     console.log(taille)
-    for(i = 0; i < taille; i++){
-        
-        tab = words[i.toString()]
-        let sql = "INSERT INTO NarutoShippuden(titre_anime,titre_episode,episode,likes,lien) VALUES (?,?,?,?,?)"
-        connection.query(sql,["NarutoShippuden",tab[0],tab[0].split(' ')[2],0,tab[1]],
+    let cpt = 0;
+    let sql = "SELECT table_name FROM information_schema.tables WHERE table_schema = 'test';"
+    connection.query(sql,(err,result)=>{
+        for(j = 0; j < result.length; j++){
+            if(req.body.title_database.toLowerCase()===result[j].table_name){
+                cpt = 1
+                console.log("bdd existante")
+            }
+            console.log(result[j].table_name)
+
+        }
+    });
+    /*if(cpt !==0){
+        console.log("oui")
+        let sql = "CREATE TABLE "+ req.body.title_database +"(id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,titre_anime VARCHAR(255),titre_episode VARCHAR(255),episode VARCHAR(255) UNIQUE,likes INT,lien VARCHAR(255));"
+        connection.query(sql,
         (err,result)=>{
-            //if(err)throw err;
-            console.log("added "+ "NarutoShippuden" + i)
+            console.log("table "+ req.body.title_database +" créer")
+            
         });
+    }*/
+    if(cpt===1){
+
     }
+    else{
+        for(i = 0; i < taille+1; i++){
+                
+            tab = words[i.toString()]
+                
+                
+                
+            let sql = "INSERT INTO "+req.body.title_database+"(titre_anime,titre_episode,episode,likes,lien) VALUES (?,?,?,?,?)"
+            connection.query(sql,[req.body.title_database,tab[0],tab[0],0,tab[1]],
+            (err,result)=>{
+                //if(err)throw err;
+                console.log("added "+ req.body.title_database +" episode "+ i)
+            });
+        }
+
+    }
+
     
-    res.json({message: "added "+ taille +" episodes"})
+    
+    //res.json({message: "added "+ taille +" episodes"})
     res.end();
 })
 

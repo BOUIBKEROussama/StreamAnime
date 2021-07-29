@@ -15,4 +15,46 @@ CREATE TABLE Naruto
     episode VARCHAR(255) UNIQUE,
     likes INT,
     lien VARCHAR(255)
-)
+);
+CREATE TABLE bleach
+(
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    titre_anime VARCHAR(255),
+    titre_episode VARCHAR(255),
+    episode VARCHAR(255) UNIQUE,
+    likes INT,
+    lien VARCHAR(255)
+);
+CREATE TABLE fairytail
+(
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    titre_anime VARCHAR(255),
+    titre_episode VARCHAR(255),
+    episode VARCHAR(255) UNIQUE,
+    likes INT,
+    lien VARCHAR(255)
+);
+CREATE TABLE hunterxhunter
+(
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    titre_anime VARCHAR(255),
+    titre_episode VARCHAR(255),
+    episode VARCHAR(255) UNIQUE,
+    likes INT,
+    lien VARCHAR(255)
+);
+CREATE TABLE narutoshippuden
+(
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    titre_anime VARCHAR(255),
+    titre_episode VARCHAR(255),
+    episode VARCHAR(255) UNIQUE,
+    likes INT,
+    lien VARCHAR(255)
+);
+CREATE TABLE accueil_anime
+(
+    image VARCHAR(255),
+    titre VARCHAR(255),
+    lien VARCHAR(255)
+);

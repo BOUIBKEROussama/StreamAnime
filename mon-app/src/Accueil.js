@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import Carousel from 'react-bootstrap/Carousel'
+
+import './Accueil.css'
 import {
   
   Link
 } from "react-router-dom";
 import Axios from 'axios';
-import { Container, Row, Col, Button } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
+import one from './onepiece.png'
+import Bar from './Bar';
 
 function Accueil(){
 
   const [tab,setTab] = useState([])
-
+  const [tab2,setTab2] = useState([])
   useEffect(()=>{
     async function getAllNames(){
       Axios.get("http://localhost:8000/AnimeName").then((res)=>{
@@ -20,53 +23,57 @@ function Accueil(){
     })
     
     }
+    async function getTab(){
+      Axios.get("http://localhost:8000/accueil_anime").then((res)=>{
+      setTab2(res.data)
+    }).catch((err)=>{
+      console.log(err)
+    })
+    
+    }
+    getTab()
     getAllNames();
   },[]);
-  
     
-  const carousel = tab.map((s,i)=>
+  /*const carousel = tab.map((s,i)=>
   
   <Carousel.Item key={i}>
-    <img
+    <Link to ={`/${s.lien}/1`}><img
       className="d-block w-100"
       src={s.image}
       alt={s.titre}
-    />
+    /></Link>
     <Carousel.Caption>
       <h3>{s.titre}</h3>
-      <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
     </Carousel.Caption>
   </Carousel.Item>
-  
-  )
+
+
+
+
+
+  <div className="carousel">
+            <Carousel>
+              {carousel}
+            </Carousel>
+          </div>
+        
+  )*/
 
     return(
-      <Container fluid style={{height:"969px",backgroundColor:"rgb(19,19,19)"}}>
-        <Container fluid >
-          <Row>
-          <Col style={{backgroundColor:"black"}}></Col>
-            <Col xs={6} style={{backgroundColor:"black"}}>
-              <Carousel>
-                {carousel}
-              </Carousel>
-            </Col>
-          <Col style={{backgroundColor:"black"}}></Col>
-          </Row>
-        
-        </Container>
-        <Container style={{marginTop:"20px"}}>
-        <Row>
-        {tab.map((s,i)=>{
-          return <Col style={{textalign:"center"}}>
-          
-          <Link to ={`/${s.lien}/1`}>
-            <Button variant="light"> {s.titre}</Button>
-          </Link>
-          </Col>
-        })}
-        </Row>
-        </Container>
-      </Container>
+        <div className="conteneur">
+          <Bar />
+          <div className="liste-card">
+          {tab.map((s,i)=>{
+            return <div className="carte">
+            <Link to ={`/${s.lien}/1`}>
+                <img className="picture" src={s.image} alt={s.titre}/>
+            </Link>
+              </div>
+          })}
+          </div>   
+      </div>
+    
     );
   }
 

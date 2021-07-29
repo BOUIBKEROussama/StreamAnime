@@ -8,6 +8,7 @@ function ControlPannel() {
     const [listeTitle,setlisteTitle] = useState([])
     const [listeEp, setlisteEp] = useState([])
     const [adder, setAdder] = useState(false)
+    const [titreDatabase, setTitreDatabase] = useState("")
 
     useEffect(()=>{
       async function refresh(){
@@ -20,17 +21,17 @@ function ControlPannel() {
 
 
     function envoyer(e){
+      
       let f = file
       var formData = new FormData(); 
-      formData.set('test','salut');
-      formData.append('text',f);
+      formData.append("text",f);
+      formData.append('title_database',titreDatabase);
       //var  options = {contenu: formData};
-
       Axios({
         method: 'post',
-        url: 'http://localhost:8000/addLink',
+        url: "http://localhost:8000/addLink",
         data: formData,
-        //headers: {'Content-Type': 'multipart/form-data' }
+        headers: {'Content-Type': 'multipart/form-data' }
         })
         .then(function (response) {
             //handle success
@@ -79,7 +80,7 @@ function ControlPannel() {
       const container = document.getElementById("button");
       container.append(res);
     }
-
+    
 
     function deleteSerie(serie){
       Axios.delete("http://localhost:8000/del/"+serie)
@@ -98,10 +99,10 @@ function ControlPannel() {
       <div>
         <div>
           Créer une série :<br /> 
-          Titre série : <input type = "text"></input>
+          Titre database : <input type = "text" onChange={e => setTitreDatabase(e.target.value)}></input>
         </div>
         <div>
-            Liste de liens (fichier json de type : [titre anime,episode,lien])<input type="file"></input>
+            Liste de liens (fichier json de type : id:[episode(str(INT)),lien(String)])<input type="file" onChange={e => setFile(e.target.files[0])}></input>
         </div>
         <button onClick={(e)=>envoyer(e)}>Envoyer !</button>
         <div>
